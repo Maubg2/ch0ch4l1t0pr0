@@ -23,7 +23,7 @@ public class Ch0ch4l1t0pr0Application implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-	/* 	Usuario usuario = new Usuario("Edison", "Beltran", "mau@bosque.com",
+	 /* 	Usuario usuario = new Usuario("Edison", "Beltran", "mau@bosque.com",
 							 "Maubg2", "123456", "3504165311", new Date(), 2L);
 
 		repository.save(usuario);

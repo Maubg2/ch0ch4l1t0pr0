@@ -25,4 +25,7 @@ public class Mesa {
     @Column(name = "cantidad_personas")
     private int cantidadPersonas;
 
+    @Column(name = "fk_sede")
+    private Long fkSede;
+
 }

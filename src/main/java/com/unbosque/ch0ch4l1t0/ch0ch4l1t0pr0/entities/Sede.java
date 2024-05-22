@@ -24,7 +24,4 @@ public class Sede {
     private String nombre;
     private String telefono;
 
-    @Column(name = "fk_mesa")
-    private Long fkMesa;
-
 }

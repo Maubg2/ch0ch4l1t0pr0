@@ -41,7 +41,6 @@ public class SedeServiceImpl implements SedeService{
             Sede sedeActualizada = new Sede();
             sedeActualizada.setCiudad(sede.getCiudad());
             sedeActualizada.setDireccion(sede.getDireccion());
-            sedeActualizada.setFkMesa(sede.getFkMesa());
             sedeActualizada.setNombre(sede.getNombre());
             sedeActualizada.setTelefono(sede.getTelefono());
             return Optional.of(repository.save(sedeActualizada));

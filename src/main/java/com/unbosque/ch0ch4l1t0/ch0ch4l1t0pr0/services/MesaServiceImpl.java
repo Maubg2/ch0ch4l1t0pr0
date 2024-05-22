@@ -41,6 +41,7 @@ public class MesaServiceImpl implements MesaService{
             Mesa mesaActualizada = new Mesa();
             mesaActualizada.setCantidadPersonas(mesa.getCantidadPersonas());
             mesaActualizada.setEsLibre(mesa.isEsLibre());
+            mesaActualizada.setFkSede(mesa.getFkSede());
             return Optional.of(repository.save(mesaActualizada));
         }
         return mesaBD;
