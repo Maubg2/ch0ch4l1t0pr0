@@ -42,14 +42,14 @@ public class UsuarioController {
         Usuario usuarioBD = usuarioService.obtenerPorUsername(usuario.getUsername());
         if(usuarioService.validarCredenciales(usuario.getUsername(), usuario.getContrasena())){
             if(usuarioBD.getFkRol() == 1){
-                auditoriaService.crearAuditoria(new Auditoria("Inicio de sesión cliente", new Date(), "Ninguna", usuarioBD.getId()));
+            //    auditoriaService.crearAuditoria(new Auditoria("Inicio de sesión cliente", new Date(), "Ninguna", usuarioBD.getId()));
                 return "redirect:/menu";
             }else{
-                auditoriaService.crearAuditoria(new Auditoria("Inicio de sesión admin", new Date(), "Ninguna", usuarioBD.getId()));
+            //    auditoriaService.crearAuditoria(new Auditoria("Inicio de sesión admin", new Date(), "Ninguna", usuarioBD.getId()));
                 return "redirect:/menuAdmin";
             }
         }else{
-            auditoriaService.crearAuditoria(new Auditoria("Inicio de sesión fallido", new Date(), "Ninguna", 0L));
+        //    auditoriaService.crearAuditoria(new Auditoria("Inicio de sesión fallido", new Date(), "Ninguna", 0L));
             model.addAttribute("mensajeError", "Usuario y/o contraseña incorrectos");
             return "login";
         }
@@ -64,12 +64,12 @@ public class UsuarioController {
     public String index(@ModelAttribute("usuario") Usuario usuario, Model model){
         Usuario comprobarUsuario = usuarioService.obtenerPorUsername(usuario.getUsername());
         if(comprobarUsuario == null){
-            auditoriaService.crearAuditoria(new Auditoria("Registro exitoso", new Date(), "Usuario", 0L));
+        //    auditoriaService.crearAuditoria(new Auditoria("Registro exitoso", new Date(), "Usuario", 0L));
             usuario.setFkRol(1L);
             usuarioService.guardarUsuario(usuario);
             return "redirect:/login";
         }else{
-            auditoriaService.crearAuditoria(new Auditoria("Registro fallido", new Date(), "Ninguna", 0L));
+        //    auditoriaService.crearAuditoria(new Auditoria("Registro fallido", new Date(), "Ninguna", 0L));
             model.addAttribute("mensajeError", "Usuario ya existe");
             return "registrar";
         }
