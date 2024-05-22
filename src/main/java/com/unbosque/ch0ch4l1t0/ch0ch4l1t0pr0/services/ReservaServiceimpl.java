@@ -36,13 +36,26 @@ public class ReservaServiceimpl implements ReservaService {
     @Override
     @Transactional
     public Optional<Reserva> modificarReserva(Long id, Reserva reserva) {
-        return null;
+        Optional<Reserva> reservaBD = repository.findById(id);
+        if(reservaBD.isPresent()){
+            Reserva reservaActualizada = new Reserva();
+            reservaActualizada.setFecha(reserva.getFecha());
+            reservaActualizada.setFkSede(reserva.getFkSede());
+            reservaActualizada.setFkTipoReserva(reserva.getFkTipoReserva());
+            reservaActualizada.setFkUsuario(reserva.getFkUsuario());
+            return Optional.of(repository.save(reservaActualizada));
+        }
+        return reservaBD;
     }
 
     @Override
+    @Transactional
     public Optional<Reserva> eliminarReserva(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarReserva'");
+        Optional<Reserva> reservOptional = repository.findById(id);
+        reservOptional.ifPresent(r -> {
+            repository.delete(r);
+        });
+        return reservOptional;
     }
 
 }
