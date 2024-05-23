@@ -61,29 +61,6 @@
 						
 					</form>
 				</div>
-				 <!-- Columna de la tabla -->
-				 <div class="col-lg-4 text-right">
-					<table class="table"> <!--th:if="${mesas.size() != 0} para verificar que hayan mesas registradas antes de mostrarlas-->
-						<!-- Aquí van los datos de la tabla -->
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Cantidad de personas</th>
-								<th>Disponible</th>
-								<th>Accion</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="text-center" th:each="mesa : ${mesas}"> <!--th:each="mesa : ${mesas} para recorrer las mesas disponibles-->
-								<td th:text="mesa.id">1</td> <!--th:text="mesa.name" para mostrar cada atributo-->
-								<td th:text="mesa.cantidadPersonas">2</td>
-								<td th:text="mesa.esLibre">No</td>
-								<td><button class="btn-success">Reservar</button></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<!-- Fin de la columna de la tabla -->
 			</div>
 		</div>
 	</div>
