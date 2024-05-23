@@ -28,4 +28,14 @@ public class Mesa {
     @Column(name = "fk_sede")
     private Long fkSede;
 
+    public Mesa(boolean esLibre, int cantidadPersonas, Long fkSede) {
+        this.esLibre = esLibre;
+        this.cantidadPersonas = cantidadPersonas;
+        this.fkSede = fkSede;
+    }
+
+    public Mesa(){
+        
+    }
+
 }
