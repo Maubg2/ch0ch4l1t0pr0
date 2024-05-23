@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Formulario Tipo Reserva</title>
+    <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="text-center" th:text="${tipoReserva.id == null} ? 'Crear Tipo de Reserva' : 'Modificar Tipo de Reserva'"></h2>
+        
+        <form th:action="@{${actionUrl}}" th:object="${tipoReserva}" method="post">
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <input type="text" class="form-control" id="descripcion" th:field="*{descripcion}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="precioTipoReserva">Precio</label>
+                <input type="number" class="form-control" id="precioTipoReserva" th:field="*{precioTipoReserva}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo">Tipo</label>
+                <input type="text" class="form-control" id="tipo" th:field="*{tipo}" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+        
+        <div class="text-center">
+            <a class="btn btn-primary" th:href="@{/reservasAdmin}">Volver a Tipos de Reserva</a>
+        </div>
+    </div>
+
+</body>
+</html>

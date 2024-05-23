@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Mesa;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Sede;
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.TipoReserva;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.repositories.SedeRepository;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.AuditoriaService;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.MesaService;
@@ -102,11 +103,42 @@ public class ControllerTestEmpleado {
     }
 
 //////////////////////////////////////////////////////////
-    @GetMapping("/reservasAdmin")
-    public String reservasAdmin(Model model){
-        model.addAttribute("tipoReservas", tipoReservaService.listarTodos());
-        return "reservasAdmin";
+@GetMapping("/reservasAdmin")
+public String reservasAdmin(Model model) {
+    model.addAttribute("tipoReservas", tipoReservaService.listarTodos());
+    return "reservasAdmin";
+}
+
+@GetMapping("/crearTipoReserva")
+public String mostrarFormularioCrearTipoReserva(Model model) {
+    model.addAttribute("tipoReserva", new TipoReserva());
+    model.addAttribute("actionUrl", "/crearTipoReserva");
+    return "formularioTipoReservaAdmin";
+}
+
+@PostMapping("/crearTipoReserva")
+public String crearTipoReserva(@ModelAttribute TipoReserva tipoReserva) {
+    tipoReservaService.guardar(tipoReserva);
+    return "redirect:/reservasAdmin";
+}
+
+@GetMapping("/modificarTipoReserva/{id}")
+public String mostrarFormularioModificarTipoReserva(@PathVariable Long id, Model model) {
+    Optional<TipoReserva> tipoReserva = tipoReservaService.findById(id);
+    if (tipoReserva.isPresent()) {
+        model.addAttribute("tipoReserva", tipoReserva.get());
+        model.addAttribute("actionUrl", "/modificarTipoReserva/" + id);
+    } else {
+        return "redirect:/reservasAdmin";
     }
+    return "formularioTipoReservaAdmin";
+}
+
+@PostMapping("/modificarTipoReserva/{id}")
+public String modificarTipoReserva(@PathVariable Long id, @ModelAttribute TipoReserva tipoReservaModificada) {
+    tipoReservaService.modificarTipoReserva(id, tipoReservaModificada);
+    return "redirect:/reservasAdmin";
+}
 
 //////////////////////////////////////////////////////////
     @GetMapping("/verClientesAdmin")
