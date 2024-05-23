@@ -31,7 +31,7 @@
 				<h1 class="text-center">Crear reserva</h1>
 				<div class="card-body">
 
-					<form th:action="@{/testcliente/reservaCliente}" th:object="${reserva}" method="POST"> <!--Agregar ruta de endpoint POST-->
+					<form th:action="@{/testcliente/cargarMesa}" th:object="${reserva}" method="POST"> <!--Agregar ruta de endpoint POST-->
 						
 						<div class="form-group">
 							<div class="input-group">
@@ -56,7 +56,7 @@
 						</div>
 
 						<div class="box-footer">
-							<button class="btn btn-success">Solicitar</button>
+							<button class="btn btn-success">Buscar</button>
 						</div>
 						
 					</form>
@@ -70,13 +70,15 @@
 								<th>ID</th>
 								<th>Cantidad de personas</th>
 								<th>Disponible</th>
+								<th>Accion</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="text-center"> <!--th:each="mesa : ${mesas} para recorrer las mesas disponibles-->
-								<td>1</td> <!--th:text="mesa.name" para mostrar cada atributo-->
-								<td>2</td>
-								<td>No</td>
+							<tr class="text-center" th:each="mesa : ${mesas}"> <!--th:each="mesa : ${mesas} para recorrer las mesas disponibles-->
+								<td th:text="mesa.id">1</td> <!--th:text="mesa.name" para mostrar cada atributo-->
+								<td th:text="mesa.cantidadPersonas">2</td>
+								<td th:text="mesa.esLibre">No</td>
+								<td><button class="btn-success">Reservar</button></td>
 							</tr>
 						</tbody>
 					</table>
