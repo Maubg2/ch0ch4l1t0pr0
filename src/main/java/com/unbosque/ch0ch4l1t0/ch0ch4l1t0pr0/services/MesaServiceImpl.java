@@ -33,18 +33,17 @@ public class MesaServiceImpl implements MesaService{
         return repository.save(mesa);
     }
 
-    @Override
     @Transactional
-    public Optional<Mesa> modificarMesa(Long id, Mesa mesa) {
+    public Optional<Mesa> modificarMesa(Long id, Mesa mesaModificada) {
         Optional<Mesa> mesaBD = repository.findById(id);
-        if(mesaBD.isPresent()){
-            Mesa mesaActualizada = new Mesa();
-            mesaActualizada.setCantidadPersonas(mesa.getCantidadPersonas());
-            mesaActualizada.setEsLibre(mesa.isEsLibre());
-            mesaActualizada.setFkSede(mesa.getFkSede());
+        if (mesaBD.isPresent()) {
+            Mesa mesaActualizada = mesaBD.get();
+            mesaActualizada.setCantidadPersonas(mesaModificada.getCantidadPersonas());
+            mesaActualizada.setEsLibre(mesaModificada.isEsLibre());
+            mesaActualizada.setFkSede(mesaModificada.getFkSede());
             return Optional.of(repository.save(mesaActualizada));
         }
-        return mesaBD;
+        return Optional.empty();
     }
 
     @Override

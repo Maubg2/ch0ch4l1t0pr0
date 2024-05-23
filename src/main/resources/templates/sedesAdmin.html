@@ -44,6 +44,7 @@
 					<td><span th:text="${sede.direccion} ?: 'No hay sede'"></span></td>
 					<td>
 						<a class="btn btn-primary" th:href="@{'/modificarSedeAdmin/' + ${sede.id}}">Modificar</a>
+						<a class="btn btn-secondary" th:href="@{'/verMesas/' + ${sede.id}}">Ver mesas</a>
 					</td>
 				</tr>
 			</tbody>
