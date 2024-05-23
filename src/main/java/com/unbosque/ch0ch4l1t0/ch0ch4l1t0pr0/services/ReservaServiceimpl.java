@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Reserva;
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.TipoReserva;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.repositories.ReservaRepository;
 
 import jakarta.transaction.Transactional;
@@ -56,6 +57,18 @@ public class ReservaServiceimpl implements ReservaService {
             repository.delete(r);
         });
         return reservOptional;
+    }
+
+    //Método usado para obtener las reservas de un usuario en específico
+    @Override
+    public List<Reserva> listarReservasUsuario(Long userId) {
+        return repository.listarReservasUsuario(userId);
+    }
+
+    //Método que se usa para obtener el tipo de reserva registrado en una reserva con la FK de TipoReserva
+    @Override
+    public TipoReserva listarTipoReservaReserva(Long reservaId) {
+        return repository.listarTipoReservaReserva(reservaId);
     }
 
 }

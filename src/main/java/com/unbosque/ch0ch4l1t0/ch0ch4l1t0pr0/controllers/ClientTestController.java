@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Mesa;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Reserva;
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.TipoReserva;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Usuario;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.MesaService;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.ReservaService;
@@ -27,6 +28,7 @@ import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.TipoReservaService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 @RequestMapping("/testcliente")
@@ -132,6 +134,25 @@ public class ClientTestController {
     }
 
     //----------------------FIN HACER RESERVA-------------------
+
+    //----------------------INICIO VER RESERVAS-----------------
+
+    //Método que carga la plantilla de verReservaCliente.html
+    @GetMapping("/verReservaCliente")
+    public String verReservaCliente(Model model){
+
+        //Cargar las reservas del cliente
+        java.util.List<Reserva> reservasUsuario = reservaService.listarReservasUsuario(1L); //TODO: CAMBIAR POR EL ID DEL USUARIO 
+
+        //Cargar los tipos de reserva de las reservas
+        TipoReserva tipoReserva = reservaService.listarTipoReservaReserva(reservasUsuario.get(0).getId()); //No contempla que un usuario tenga más de una reserva
+
+        model.addAttribute("reservasUsr",  reservaService.listarReservasUsuario(1L)); //TODO: CAMBIAR POR EL ID DEL USUARIO
+        model.addAttribute("tipoReserva", tipoReserva);
+        return "verReservaCliente";
+    }
+
+    //----------------------FIN VER RESERVAS-----------------
 
     //Método para el formato de la fecha
     @InitBinder

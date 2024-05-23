@@ -22,5 +22,37 @@
 		</div>
 	</nav>
     
+	<div>
+		<h3 class="text-center">Mis reservas</h3>
+		<br>
+		<!--Objeto de la tabla: reservasUsr -->
+		<table class="table">
+			<thead>
+				<tr>
+					<!--<th>ID</th> No es óptimo-->
+					<th>Fecha</th>
+					<th>Tipo</th>
+					<th>Sede</th>
+					<th>Usuario</th>
+					<th>Mesa</th> <!--ID de la mesa-->
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="reserva : ${reservasUsr}">
+					<td><span th:text="${reserva.fecha}"></P></span></td>
+					<td><span th:text="${tipoReserva.tipo}">Prueba</span></td>
+					<td><span>Prueba</span></td>
+					<td><span>Prueba</span></td>
+					<td>Prueba</td>
+					<td>
+						<a class="btn btn-primary">Modificar</a>
+						<a class="btn btn-danger">Cancelar</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
 </body>
 </html>
