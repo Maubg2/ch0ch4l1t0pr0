@@ -32,4 +32,7 @@ public class Reserva {
     @Column(name = "fk_usuario")
     private Long fkUsuario;
 
+    @Column(name = "fk_mesa")
+    private Long fkMesa;
+
 }

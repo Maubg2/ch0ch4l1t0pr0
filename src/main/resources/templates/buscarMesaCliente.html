@@ -46,7 +46,12 @@
                                 <td th:text="${mesa.id}"></td> <!--th:text="mesa.name" para mostrar cada atributo-->
                                 <td th:text="${mesa.cantidadPersonas}"></td>
                                 <td th:text="${mesa.esLibre} ? 'Si' : 'No'"></td>
-                                <td><button class="btn-success">Reservar</button></td>
+                                <td th:if="${mesa.esLibre}">
+                                    <form th:action="@{/testcliente/crearReserva}" method="post">
+                                        <input type="hidden" name="mesaId" th:value="${mesa.id}">
+                                        <button type="submit" class="btn-success">Reservar</button>
+                                    </form>
+                                </td>
                             </tr>
                         </tbody>
                 </table>

@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Mesa;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Reserva;
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Usuario;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.MesaService;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.ReservaService;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.SedeService;
@@ -74,12 +76,29 @@ public class ClientTestController {
 
     //Este método recibe el formulario de crear una reserva
     //Método que se usa para guardar la reserva en la DB
-    @PostMapping("/reservaCliente")
-    public String verReserva(@ModelAttribute("reserva") Reserva reserva, Model model){
+    @PostMapping("/crearReserva")
+    public String verReserva(@RequestParam("mesaId") Long mesaid, Model model, HttpSession session){
         //Verificar que la reserva esté disponible
         //Reserva reserva = reservaService.
 
-        System.out.println("Operación exitosa");
+        Mesa mesaTarget = mesaService.findById(mesaid).get();
+        Reserva reservaTarget = (Reserva) session.getAttribute("reserva");
+        System.out.println("Operación exitosa, reservando mesa " + mesaTarget.getId());
+
+        //Puliendo el objeto a guardar en la base de datos
+        reservaTarget.setFkMesa(mesaTarget.getId());
+        
+        System.out.println(mesaTarget == null);
+        reservaTarget.setFkUsuario(1L); //Este valor debería ser el ID del usuario logueado
+        //Guardar reserva en la base de datos
+        reservaService.guardar(reservaTarget);
+
+        //Actualizar el estado de la mesa
+        if(mesaTarget.isEsLibre()){
+            mesaTarget.setEsLibre(false);
+            mesaService.modificarMesa(mesaid, mesaTarget);
+        }
+        
         return "redirect:/testcliente/reservaCliente";
     }
 
@@ -105,6 +124,8 @@ public class ClientTestController {
         java.util.List<Mesa> mesasDeSede = mesaService.mesasPorSedeId(id);
         System.out.println("Encontradas " + mesasDeSede.size() + " mesas");
         //No envía las mesas encontradas
+        
+        System.out.println("Es libre: " + mesasDeSede.get(0).isEsLibre());
         model.addAttribute("mesas", mesasDeSede);
 
         return "buscarMesaCliente";
