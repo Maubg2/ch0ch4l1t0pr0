@@ -35,17 +35,17 @@ public class SedeServiceImpl implements SedeService{
 
     @Override
     @Transactional
-    public Optional<Sede> modificarSede(Long id, Sede sede) {
+    public Optional<Sede> modificarSede(Long id, Sede sedeModificada) {
         Optional<Sede> sedeBD = repository.findById(id);
-        if(sedeBD.isPresent()){
-            Sede sedeActualizada = new Sede();
-            sedeActualizada.setCiudad(sede.getCiudad());
-            sedeActualizada.setDireccion(sede.getDireccion());
-            sedeActualizada.setNombre(sede.getNombre());
-            sedeActualizada.setTelefono(sede.getTelefono());
-            return Optional.of(repository.save(sedeActualizada));
+        if (sedeBD.isPresent()) {
+            Sede sede = sedeBD.get();
+            sede.setNombre(sedeModificada.getNombre());
+            sede.setCiudad(sedeModificada.getCiudad());
+            sede.setTelefono(sedeModificada.getTelefono());
+            sede.setDireccion(sedeModificada.getDireccion());
+            return Optional.of(repository.save(sede));
         }
-        return sedeBD;
+        return Optional.empty();
     }
 
     @Override

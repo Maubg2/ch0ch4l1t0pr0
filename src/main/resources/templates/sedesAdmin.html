@@ -14,21 +14,11 @@
 		<a class="navbar-brand" href="#"> Control de usuarios</a>
 		<div class="collapse navbar-collapse" id="collapsibleNavbar">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link"
-					th:href="@{/sedesAdmin}">Sedes</a>
-                </li>
-				<li class="nav-item"><a class="nav-link"
-					th:href="@{/reservasAdmin}">Tipos reserva</a>
-                </li>
-                <li class="nav-item"><a class="nav-link"
-                    th:href="@{/verClientesAdmin}">Clientes</a>
-                </li>
-                <li class="nav-item"><a class="nav-link"
-                    th:href="@{/auditoriasAdmin}">Auditoria</a>
-                </li>
-                <li class="nav-item"><a class="nav-link"
-                    th:href="@{/l}">Cerrar sesión</a>
-                </li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/sedesAdmin}">Sedes</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/reservasAdmin}">Tipos reserva</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/verClientesAdmin}">Clientes</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/auditoriasAdmin}">Auditoria</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/l}">Cerrar sesión</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -41,39 +31,27 @@
 				<tr>
 					<th>Nombre</th>
 					<th>Ciudad</th>
-					<th>Telefono</th>
+					<th>Teléfono</th>
 					<th>Dirección</th>
+					<th>Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="sede : ${sedes}">
+					<td><span th:text="${sede.nombre} ?: 'No hay sede'"></span></td>
+					<td><span th:text="${sede.ciudad} ?: 'No hay sede'"></span></td>
+					<td><span th:text="${sede.telefono} ?: 'No hay sede'"></span></td>
+					<td><span th:text="${sede.direccion} ?: 'No hay sede'"></span></td>
 					<td>
-						<span th:text="${sede.nombre} ?: 'No hay sede'"></span>
+						<a class="btn btn-primary" th:href="@{'/modificarSedeAdmin/' + ${sede.id}}">Modificar</a>
 					</td>
-					
-					<td>
-						<span th:text="${sede.ciudad} ?: 'No hay sede'"></span>
-					</td>
-					
-					<td>
-						<span th:text="${sede.telefono} ?: 'No hay sede'"></span>						
-					</td>
-					
-					<td>
-						<span th:text="${sede.direccion} ?: 'No hay sede'"></span>
-					</td>
-
-					<td>
-						<a class="btn btn-primary" 
-						   th:href="@{'/modificarSedeAdmin/' + ${sede.id}}">
-							Modificar
-						</a>
-					</td>
-					
 				</tr>
 			</tbody>
 		</table>
+	</div>
 
+	<div class="text-center">
+		<a class="btn btn-success" th:href="@{/crearSede}">Crear Sede</a>
 	</div>
 
 </body>

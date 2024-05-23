@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Modificar Sede</title>
+    <title th:text="${sede.id != null} ? 'Modificar Sede' : 'Crear Sede'"></title>
     <link rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -11,9 +11,9 @@
 <body>
 
     <div class="container">
-        <h2 class="text-center">Modificar Sede</h2>
+        <h2 class="text-center" th:text="${sede.id != null} ? 'Modificar Sede' : 'Crear Sede'"></h2>
         
-        <form th:action="@{'/modificarSedeAdmin/' + ${sede.id}}" th:object="${sede}" method="post">
+        <form th:action="@{${sede.id != null} ? '/modificarSedeAdmin/' + ${sede.id} : '/crearSede'}" th:object="${sede}" method="post">
             <div class="form-group">
                 <label for="nombre">Nombre</label>
                 <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
@@ -34,7 +34,7 @@
                 <input type="text" class="form-control" id="direccion" th:field="*{direccion}" required>
             </div>
             
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <button type="submit" class="btn btn-primary" th:text="${sede.id != null} ? 'Guardar Cambios' : 'Crear Sede'"></button>
         </form>
         
     </div>
