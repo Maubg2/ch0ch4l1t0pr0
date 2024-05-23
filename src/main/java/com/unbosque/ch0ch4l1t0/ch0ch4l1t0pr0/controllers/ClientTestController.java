@@ -1,6 +1,7 @@
 package com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.hibernate.mapping.List;
@@ -22,6 +23,7 @@ import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Reserva;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Sede;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.TipoReserva;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Usuario;
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.dto.ReservaDetalladaDTO;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.MesaService;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.ReservaService;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.SedeService;
@@ -145,17 +147,42 @@ public class ClientTestController {
         //Cargar las reservas del cliente
         java.util.List<Reserva> reservasUsuario = reservaService.listarReservasUsuario(1L); //TODO: CAMBIAR POR EL ID DEL USUARIO 
 
+        //Verificar si la respuesta con las reservas está vacía
+        if(reservasUsuario.size() == 0){
+            System.out.println("No hay reservas");
+            //TODO: Agregar la alerta de que no hay reservas
+            return "redirect:/testcliente/reservaCliente";
+        }
+
+        //Creando la lista con las reservas con toda su información en vez de FKs
+        java.util.List<ReservaDetalladaDTO> reservasDetalladas = new ArrayList<>();
+
+        //Popular el ArrayList con DTOs
+        for(Reserva reserva : reservasUsuario){
+            ReservaDetalladaDTO dto = new ReservaDetalladaDTO();
+            dto.setReserva(reserva);
+            dto.setSede(reservaService.listarSedeReserva(reserva.getId()));
+            dto.setTipoReserva(reservaService.listarTipoReservaReserva(reserva.getId()));
+            dto.setMesa(reservaService.listarMesaReserva(reserva.getId()));
+            dto.setUsuario(reservaService.listarUsuarioReserva(reserva.getId()));
+            reservasDetalladas.add(dto);
+        }
+
+        //Mandarlo pal front
+        model.addAttribute("reservas", reservasDetalladas);
+
+        /* 
         //Cargar los tipos de reserva de las reservas
-        TipoReserva tipoReserva = reservaService.listarTipoReservaReserva(reservasUsuario.get(0).getId()); //No contempla que un usuario tenga más de una reserva
+        TipoReserva tipoReserva = reservaService.listarTipoReservaReserva(reservasUsuario.get(1).getId()); //No contempla que un usuario tenga más de una reserva
 
         //Cargar la sede asociada a la reserva
-        Sede sede = reservaService.listarSedeReserva(reservasUsuario.get(0).getId()); //TODO: No contempla usar más de una reserva por usuario
+        Sede sede = reservaService.listarSedeReserva(reservasUsuario.get(1).getId()); //TODO: No contempla usar más de una reserva por usuario
 
         //Cargar la mesa asociada a la reserva
-        Mesa mesa = reservaService.listarMesaReserva(reservasUsuario.get(0).getId()); //NO CONTEMPLA VARIAS RESERVAS
+        Mesa mesa = reservaService.listarMesaReserva(reservasUsuario.get(1).getId()); //NO CONTEMPLA VARIAS RESERVAS
 
         //Cargar el usuario asociado a la reserva
-        Usuario usuario = reservaService.listarUsuarioReserva(reservasUsuario.get(0).getId()); //NO CONTEMPLA VARIAS RESERVAS
+        Usuario usuario = reservaService.listarUsuarioReserva(reservasUsuario.get(1).getId()); //NO CONTEMPLA VARIAS RESERVAS
 
         //Agregar objetos al front
         model.addAttribute("reservasUsr",  reservaService.listarReservasUsuario(1L)); //TODO: CAMBIAR POR EL ID DEL USUARIO
@@ -163,6 +190,8 @@ public class ClientTestController {
         model.addAttribute("sede", sede);
         model.addAttribute("mesa", mesa);
         model.addAttribute("usuario", usuario);
+
+        */
         return "verReservaCliente";
     }
 

@@ -39,12 +39,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="reserva : ${reservasUsr}">
-					<td><span th:text="${reserva.fecha}"></span></td>
-					<td><span th:text="${tipoReserva.tipo}"></span></td>
-					<td><span th:text="${sede.nombre}"></span></td>
-					<td><span th:text="${usuario.nombres}"></span></td>
-					<td><span th:text="${mesa.id}"></span></td>
+				<tr th:each="reserva : ${reservas}">
+					<td><span th:text="${reserva.reserva.fecha}"></span></td>
+					<td><span th:text="${reserva.tipoReserva.tipo}"></span></td>
+					<td><span th:text="${reserva.sede.nombre}"></span></td>
+					<td><span th:text="${reserva.usuario.nombres}"></span></td>
+					<td><span th:text="${reserva.mesa.id}"></span></td>
 					<td>
 						<a class="btn btn-primary">Modificar</a>
 						<a class="btn btn-danger">Cancelar</a>
