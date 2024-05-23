@@ -57,4 +57,9 @@ public class MesaServiceImpl implements MesaService{
         return mesaOptional;
     }
 
+    @Override
+    public List<Mesa> mesasPorSedeId(Long sedeId) {
+        return repository.mesasPorSedeId(sedeId);
+    }
+
 }

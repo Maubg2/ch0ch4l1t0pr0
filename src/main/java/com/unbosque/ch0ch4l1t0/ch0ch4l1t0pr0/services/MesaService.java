@@ -17,4 +17,6 @@ public interface MesaService {
 
     public Optional<Mesa> eliminarMesa(Long id);
 
+    public List<Mesa> mesasPorSedeId(Long sedeId);
+
 }
