@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Usuario;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -13,5 +14,8 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
     Optional<Usuario> findByUsername(String username);
+
+    @Query("SELECT u FROM Usuario u WHERE u.fkRol=1")
+    List<Usuario> obtenerClientes();
 
 }

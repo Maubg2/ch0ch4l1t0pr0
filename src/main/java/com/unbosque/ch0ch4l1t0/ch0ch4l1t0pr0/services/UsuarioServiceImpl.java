@@ -1,5 +1,6 @@
 package com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,11 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     @Autowired
     private UsuarioRepository repository;
+
+    @Override
+    public List<Usuario> obtenerClientes() {
+        return repository.obtenerClientes();
+    }
 
     @Override
     public Usuario obtenerPorUsername(String username){

@@ -33,7 +33,34 @@
 		</div>
 	</nav>
 	
-	
+	<div th:if="${not #lists.isEmpty(usuarios)}">
+		<h3 class="text-center">Sedes</h3>
+		<br>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Apellidos</th>
+					<th>Username</th>
+					<th>Correo</th>
+					<th>Telefono</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="usuario : ${usuarios}">
+					<td><span th:text="${usuario.nombres} ?: 'No hay '"></span></td>
+					<td><span th:text="${usuario.apellidos} ?: 'No hay '"></span></td>
+					<td><span th:text="${usuario.username} ?: 'No hay '"></span></td>
+					<td><span th:text="${usuario.email} ?: 'No hay '"></span></td>
+					<td><span th:text="${usuario.telefono} ?: 'No hay '"></span></td>
+					<td>
+						<a class="btn btn-primary" th:href="@{'/modificarSedeAdmin/' + ${usuario.id}}">Modificar</a>
+						<a class="btn btn-secondary" th:href="@{'/verMesas/' + ${usuario.id}}">Ver mesas</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 </body>
 </html>
