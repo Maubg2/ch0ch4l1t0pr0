@@ -41,6 +41,8 @@ public class ClientTestController {
     private MesaService mesaService;
 
 
+    //---------------------INICIO HACER RESERVA--------------------
+
     //Métodos para retornar las plantillas Thymeleaf
     @GetMapping("/reservaCliente")
     public String crearReserva(Model model){
@@ -72,7 +74,7 @@ public class ClientTestController {
         return "redirect:/testcliente/reservaCliente";
     }
 
-    //----------------------FIN HACER RESERVA
+    //----------------------FIN HACER RESERVA-------------------
 
     //Método para el formato de la fecha
     @InitBinder
