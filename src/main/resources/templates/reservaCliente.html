@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Cliente</title>
+</head>
+<body>
+
+	<!--Barra de navegación superior-->
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+		<a class="navbar-brand" href="#"> CLIENTE </a>
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/testcliente/reserva}">Hacer una reserva</a></li> <!--Ruta actual de desarrollo CAMBIAR EN PRODUCCIÓN-->
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/testcliente/verReserva}">Ver mis reservas</a></li> <!--Ruta actual de desarrollo CAMBIAR EN PRODUCCIÓN-->
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/index}">Log out</a></li> <!--Ruta actual de desarrollo CAMBIAR EN PRODUCCIÓN-->
+			</ul>
+		</div>
+	</nav>
+	<!--Fin barra de navegación superior-->
+
+	<div class="container">
+		<div class="row">
+			<div
+				class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+				<h1 class="text-center">Regitro usuario</h1>
+				<div class="card-body">
+
+					<form th:action="@{/testcliente/reservaCliente}" th:object="${reserva}" method="POST"> <!--Agregar ruta de endpoint POST-->
+						
+						<div class="form-group">
+							<label>Fecha: </label> <input type="date" name="fecha"
+								th:field="*{fecha}" class="form-control"
+								placeholder="Digite su nombre: " required>
+						</div>
+						
+						<div class="form-group">
+							<label>Sede: </label> 
+							<select th:field="*{fkSede}">
+								<option th:each="sede : ${sedes}" th:value="${sede}" th:text="${sede}"></option> <!--Recorrer la lista de sedes disponibles-->
+							</select>
+						</div>
+						
+						<div class="form-group">
+							<label>Tipo: </label> 
+							<select th:field="*{fkTipoReserva}">
+								<option th:each="tipo : ${tiposReserva}" th:value="${tipo}" th:text="${tipo}"></option> <!--Recorrer la lista de tipos de reserva disponibles-->
+							</select>
+						</div>
+
+						<div class="box-footer">
+							<button class="btn btn-success">Solicitar</button>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+</body>
+</html>
