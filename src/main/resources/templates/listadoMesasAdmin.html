@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -25,24 +26,17 @@
             <tbody>
                 <tr th:each="mesa : ${mesas}">
                     <td th:text="${mesa.id}"></td>
+                    <td th:text="${mesa.esLibre ? 'Sí' : 'No'}"></td>
+                    <td th:text="${mesa.cantidadPersonas}"></td>
                     <td>
-                        <input type="checkbox" th:field="*{mesa.esLibre}" th:checked="${mesa.esLibre}">
-                    </td>
-                    <td>
-                        <input type="number" th:field="*{mesa.cantidadPersonas}" th:value="${mesa.cantidadPersonas}" min="1">
-                    </td>
-                    <td>
-                        <form th:action="@{'/modificarMesa/' + ${mesa.id}}" method="post">
-                            <input type="hidden" th:field="*{mesa.fkSede}" th:value="${mesa.fkSede}">
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                        </form>
+                        <a class="btn btn-primary" th:href="@{'/modificarMesa/' + ${mesa.id}}">Modificar</a>
                     </td>
                 </tr>
             </tbody>
         </table>
 
         <div class="text-center">
-            <a class="btn btn-primary" th:href="@{/sedesAdmin}">Volver a Sedes</a>
+            <a class="btn btn-primary" th:href="@{'/sedesAdmin'}">Volver a Sedes</a>
         </div>
     </div>
 
@@ -50,8 +44,8 @@
 </html>
 
 
-
-<!--  <!DOCTYPE html>
+<!--
+  <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
