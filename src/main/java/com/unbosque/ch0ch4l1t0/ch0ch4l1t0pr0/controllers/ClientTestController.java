@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Mesa;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Reserva;
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Sede;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.TipoReserva;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Usuario;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.MesaService;
@@ -147,8 +148,21 @@ public class ClientTestController {
         //Cargar los tipos de reserva de las reservas
         TipoReserva tipoReserva = reservaService.listarTipoReservaReserva(reservasUsuario.get(0).getId()); //No contempla que un usuario tenga más de una reserva
 
+        //Cargar la sede asociada a la reserva
+        Sede sede = reservaService.listarSedeReserva(reservasUsuario.get(0).getId()); //TODO: No contempla usar más de una reserva por usuario
+
+        //Cargar la mesa asociada a la reserva
+        Mesa mesa = reservaService.listarMesaReserva(reservasUsuario.get(0).getId()); //NO CONTEMPLA VARIAS RESERVAS
+
+        //Cargar el usuario asociado a la reserva
+        Usuario usuario = reservaService.listarUsuarioReserva(reservasUsuario.get(0).getId()); //NO CONTEMPLA VARIAS RESERVAS
+
+        //Agregar objetos al front
         model.addAttribute("reservasUsr",  reservaService.listarReservasUsuario(1L)); //TODO: CAMBIAR POR EL ID DEL USUARIO
         model.addAttribute("tipoReserva", tipoReserva);
+        model.addAttribute("sede", sede);
+        model.addAttribute("mesa", mesa);
+        model.addAttribute("usuario", usuario);
         return "verReservaCliente";
     }
 

@@ -6,8 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Mesa;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Reserva;
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Sede;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.TipoReserva;
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Usuario;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.repositories.ReservaRepository;
 
 import jakarta.transaction.Transactional;
@@ -69,6 +72,21 @@ public class ReservaServiceimpl implements ReservaService {
     @Override
     public TipoReserva listarTipoReservaReserva(Long reservaId) {
         return repository.listarTipoReservaReserva(reservaId);
+    }
+
+    @Override
+    public Sede listarSedeReserva(Long reservaId) {
+        return repository.listarSedeReserva(reservaId);
+    }
+
+    @Override
+    public Mesa listarMesaReserva(Long reservaId) {
+        return repository.listarMesaReserva(reservaId);
+    }
+
+    @Override
+    public Usuario listarUsuarioReserva(Long reservaId) {
+        return repository.listarUsuarioReserva(reservaId);
     }
 
 }
