@@ -1,4 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Listado de Mesas</title>
+    <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+<body>
 
+    <div class="container">
+        <h2 class="text-center">Listado de Mesas</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Libre</th>
+                    <th>Cantidad de Personas</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="mesa : ${mesas}">
+                    <td th:text="${mesa.id}"></td>
+                    <td th:text="${mesa.esLibre ? 'Sí' : 'No'}"></td>
+                    <td th:text="${mesa.cantidadPersonas}"></td>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{'/modificarMesa/' + ${mesa.id} + '/' + ${idSede}}">Modificar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <a class="btn btn-success" th:href="@{'/crearMesa/' + ${idSede}}">Crear Mesa</a>
+            <a class="btn btn-primary" th:href="@{'/sedesAdmin'}">Volver a Sedes</a>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+<!--
+ 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -37,48 +85,6 @@
 
         <div class="text-center">
             <a class="btn btn-primary" th:href="@{'/sedesAdmin'}">Volver a Sedes</a>
-        </div>
-    </div>
-
-</body>
-</html>
-
-
-<!--
-  <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <title>Listado de Mesas</title>
-    <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-</head>
-<body>
-
-    <div class="container">
-        <h2 class="text-center">Listado de Mesas</h2>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Libre</th>
-                    <th>Cantidad de Personas</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="mesa : ${mesas}">
-                    <td th:text="${mesa.id}"></td>
-                    <td th:text="${mesa.esLibre ? 'Sí' : 'No'}"></td>
-                    <td th:text="${mesa.cantidadPersonas}"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="text-center">
-            <a class="btn btn-primary" th:href="@{/sedesAdmin}">Volver a Sedes</a>
         </div>
     </div>
 

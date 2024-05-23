@@ -40,67 +40,83 @@ public class ControllerTestEmpleado {
         return "menuAdmin";
     }
 //////////////////////////////////////////////////////////
-  
-    @GetMapping("/sedesAdmin")
-    public String sedesAdmin(Model model) {
-        List<Sede> sedes = sedeService.listarSedes();
-        model.addAttribute("sedes", sedes);
-        return "sedesAdmin";
-    }
 
-    @GetMapping("/modificarSedeAdmin/{idSede}")
-    public String mostrarFormularioModificarSede(@PathVariable Long idSede, Model model) {
-        Optional<Sede> sede = sedeService.findById(idSede);
-        if (sede.isPresent()) {
-            model.addAttribute("sede", sede.get());
-        } else {
-            model.addAttribute("sede", new Sede());
-        }
-        return "modificarSedeAdmin";
-    }
+@GetMapping("/sedesAdmin")
+public String sedesAdmin(Model model) {
+    List<Sede> sedes = sedeService.listarSedes();
+    model.addAttribute("sedes", sedes);
+    return "sedesAdmin";
+}
 
-    @PostMapping("/modificarSedeAdmin/{idSede}")
-    public String modificarSedeAdmin(@PathVariable Long idSede, @ModelAttribute Sede sedeModificada) {
-        sedeService.modificarSede(idSede, sedeModificada);
-        return "redirect:/sedesAdmin";
-    }
-
-    @GetMapping("/crearSede")
-    public String mostrarFormularioCrearSede(Model model) {
+@GetMapping("/modificarSedeAdmin/{idSede}")
+public String mostrarFormularioModificarSede(@PathVariable Long idSede, Model model) {
+    Optional<Sede> sede = sedeService.findById(idSede);
+    if (sede.isPresent()) {
+        model.addAttribute("sede", sede.get());
+    } else {
         model.addAttribute("sede", new Sede());
-        return "modificarSedeAdmin";
     }
+    return "modificarSedeAdmin";
+}
 
-    @PostMapping("/crearSede")
-    public String crearSede(@ModelAttribute Sede nuevaSede) {
-        sedeService.guardar(nuevaSede);
-        return "redirect:/sedesAdmin";
-    }
+@PostMapping("/modificarSedeAdmin/{idSede}")
+public String modificarSedeAdmin(@PathVariable Long idSede, @ModelAttribute Sede sedeModificada) {
+    sedeService.modificarSede(idSede, sedeModificada);
+    return "redirect:/sedesAdmin";
+}
 
-    @GetMapping("/verMesas/{idSede}")
-    public String verMesas(@PathVariable Long idSede, Model model) {
-        List<Mesa> mesas = mesaService.mesasPorSedeId(idSede);
-        model.addAttribute("mesas", mesas);
-        model.addAttribute("idSede", idSede);
-        return "listadoMesasAdmin";
-    }
+@GetMapping("/crearSede")
+public String mostrarFormularioCrearSede(Model model) {
+    model.addAttribute("sede", new Sede());
+    return "modificarSedeAdmin";
+}
 
-    @GetMapping("/modificarMesa/{idMesa}")
-    public String mostrarFormularioModificarMesa(@PathVariable Long idMesa, Model model) {
-        Optional<Mesa> mesa = mesaService.findById(idMesa);
-        if (mesa.isPresent()) {
-            model.addAttribute("mesa", mesa.get());
-        } else {
-            model.addAttribute("mesa", new Mesa());
-        }
-        return "modificarMesaAdmin";
-    }
+@PostMapping("/crearSede")
+public String crearSede(@ModelAttribute Sede nuevaSede) {
+    sedeService.guardar(nuevaSede);
+    return "redirect:/sedesAdmin";
+}
 
-    @PostMapping("/modificarMesa/{idMesa}")
-    public String modificarMesa(@PathVariable Long idMesa, @ModelAttribute Mesa mesaModificada) {
-        mesaService.modificarMesa(idMesa, mesaModificada);
-        return "redirect:/verMesas/" + mesaModificada.getFkSede();
+@GetMapping("/verMesas/{idSede}")
+public String verMesas(@PathVariable Long idSede, Model model) {
+    List<Mesa> mesas = mesaService.mesasPorSedeId(idSede);
+    model.addAttribute("mesas", mesas);
+    model.addAttribute("idSede", idSede);
+    return "listadoMesasAdmin";
+}
+
+@GetMapping("/modificarMesa/{idMesa}/{idSede}")
+public String mostrarFormularioModificarMesa(@PathVariable Long idMesa, @PathVariable Long idSede, Model model) {
+    Optional<Mesa> mesa = mesaService.findById(idMesa);
+    if (mesa.isPresent()) {
+        model.addAttribute("mesa", mesa.get());
+    } else {
+        model.addAttribute("mesa", new Mesa());
     }
+    model.addAttribute("idSede", idSede);
+    return "modificarMesaAdmin";
+}
+
+@PostMapping("/modificarMesa/{idMesa}")
+public String modificarMesa(@PathVariable Long idMesa, @ModelAttribute Mesa mesaModificada) {
+    mesaService.modificarMesa(idMesa, mesaModificada);
+    return "redirect:/verMesas/" + mesaModificada.getFkSede();
+}
+
+@GetMapping("/crearMesa/{idSede}")
+public String mostrarFormularioCrearMesa(@PathVariable Long idSede, Model model) {
+    Mesa nuevaMesa = new Mesa();
+    nuevaMesa.setFkSede(idSede);
+    model.addAttribute("mesa", nuevaMesa);
+    model.addAttribute("idSede", idSede);
+    return "modificarMesaAdmin";
+}
+
+@PostMapping("/crearMesa")
+public String crearMesa(@ModelAttribute Mesa nuevaMesa) {
+    mesaService.guardar(nuevaMesa);
+    return "redirect:/verMesas/" + nuevaMesa.getFkSede();
+}
 
 //////////////////////////////////////////////////////////
 @GetMapping("/reservasAdmin")
