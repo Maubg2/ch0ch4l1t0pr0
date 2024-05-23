@@ -37,6 +37,8 @@ public class Auditoria {
         this.fkUsuario = fkUsuario;
     }
 
-    
+    public Auditoria(){
+        
+    }
 
 }

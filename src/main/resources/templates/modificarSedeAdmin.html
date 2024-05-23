@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Modificar Sede</title>
+    <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="text-center">Modificar Sede</h2>
+        
+        <form th:action="@{'/modificarSedeAdmin/' + ${sede.id}}" th:object="${sede}" method="post">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="ciudad">Ciudad</label>
+                <input type="text" class="form-control" id="ciudad" th:field="*{ciudad}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="text" class="form-control" id="telefono" th:field="*{telefono}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" class="form-control" id="direccion" th:field="*{direccion}" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </form>
+        
+    </div>
+
+</body>
+</html>

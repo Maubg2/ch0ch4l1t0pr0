@@ -13,7 +13,7 @@ public interface SedeService {
 
     public Sede guardar(Sede sede);
 
-    public Optional<Sede> modificarReserva(Long id, Sede sede);
+    public Optional<Sede> modificarSede(Long id, Sede sede);
 
     public Optional<Sede> eliminarSede(Long id);
 

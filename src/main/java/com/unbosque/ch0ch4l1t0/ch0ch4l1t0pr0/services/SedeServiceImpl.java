@@ -35,7 +35,7 @@ public class SedeServiceImpl implements SedeService{
 
     @Override
     @Transactional
-    public Optional<Sede> modificarReserva(Long id, Sede sede) {
+    public Optional<Sede> modificarSede(Long id, Sede sede) {
         Optional<Sede> sedeBD = repository.findById(id);
         if(sedeBD.isPresent()){
             Sede sedeActualizada = new Sede();
