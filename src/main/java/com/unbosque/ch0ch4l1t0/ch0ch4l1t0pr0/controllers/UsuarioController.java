@@ -68,15 +68,20 @@ public class UsuarioController {
     }
     @PostMapping("/index")
     public String index(@ModelAttribute("usuario") Usuario usuario, Model model){
-        Usuario comprobarUsuario = usuarioService.obtenerPorUsername(usuario.getUsername());
-        if(comprobarUsuario == null){
-            auditoriaService.crearAuditoria(new Auditoria("Registro exitoso", new Date(), "Usuario", usuario.getId()));
-            usuario.setFkRol(1L);
-            usuarioService.guardarUsuario(usuario);
-            return "redirect:/login";
-        }else{
-            auditoriaService.crearAuditoria(new Auditoria("Registro fallido", new Date(), "Ninguna", usuario.getId()));
-            model.addAttribute("mensajeError", "Usuario ya existe");
+        try{
+            Usuario comprobarUsuario = usuarioService.obtenerPorUsername(usuario.getUsername());
+            if(comprobarUsuario == null){
+                //auditoriaService.crearAuditoria(new Auditoria("Registro exitoso", new Date(), "Usuario", usuario.getId()));
+                usuario.setFkRol(1L);
+                usuarioService.guardarUsuario(usuario);
+                return "redirect:/login";
+            }else{
+                //auditoriaService.crearAuditoria(new Auditoria("Registro fallido", new Date(), "Ninguna", usuario.getId()));
+                model.addAttribute("mensajeError", "Usuario ya existe");
+                return "registrar";
+            }
+        }catch(Exception e){
+            model.addAttribute("error", "Error, intente de nuevo");
             return "registrar";
         }
     }
@@ -97,5 +102,4 @@ public class UsuarioController {
         return currentUser;
     }
 
-    
 }

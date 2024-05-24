@@ -27,14 +27,14 @@
                     th:href="@{/auditoriasAdmin}">Auditoria</a>
                 </li>
                 <li class="nav-item"><a class="nav-link"
-                    th:href="@{/l}">Cerrar sesión</a>
+                    th:href="@{/index}">Cerrar sesión</a>
                 </li>
 			</ul>
 		</div>
 	</nav>
 	
 	<div th:if="${not #lists.isEmpty(auditorias)}">
-		<h3 class="text-center">Sedes</h3>
+		<h3 class="text-center">Auditorias</h3>
 
 		<table class="table">
 			<thead>
@@ -48,19 +48,19 @@
 			<tbody>
 				<tr th:each="auditoria : ${auditorias}">
 					<td>
-						<span th:text="${auditoria.descripcion} ?: 'No hay sede'"></span>
+						<span th:text="${auditoria.descripcion} ?: 'No hay descripción'"></span>
 					</td>
 					
 					<td>
-						<span th:text="${auditoria.fecha} ?: 'No hay sede'"></span>
+						<span th:text="${auditoria.fecha} ?: 'No hay fecha'"></span>
 					</td>
 					
 					<td>
-						<span th:text="${auditoria.tablaAfectada} ?: 'No hay sede'"></span>						
+						<span th:text="${auditoria.tablaAfectada} ?: 'No hay tabla afectada'"></span>						
 					</td>
 					
 					<td>
-						<span th:text="${auditoria.fkUsuario} ?: 'No hay sede'"></span>
+						<span th:text="${auditoria.nombreUsuario} ?: 'No hay usuario'"></span>
 					</td>
 					
 				</tr>

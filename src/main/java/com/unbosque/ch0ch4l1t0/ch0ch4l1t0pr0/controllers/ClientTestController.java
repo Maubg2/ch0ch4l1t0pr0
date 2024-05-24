@@ -213,34 +213,34 @@ public class ClientTestController {
         try{
 
         
-        System.out.println("entra a GET a buscar " + id);
-        //Obtener la reserva en cuestión
-        Reserva reserva = reservaService.findById(id).get();
+            System.out.println("entra a GET a buscar " + id);
+            //Obtener la reserva en cuestión
+            Reserva reserva = reservaService.findById(id).get();
 
-        System.out.println("Encontrada reserva con ID " + reserva.getId());
-        //Popular el DTO para mostrar datos en vez de FK
-        ReservaDetalladaDTO reservaDetallada = new ReservaDetalladaDTO();
+            System.out.println("Encontrada reserva con ID " + reserva.getId());
+            //Popular el DTO para mostrar datos en vez de FK
+            ReservaDetalladaDTO reservaDetallada = new ReservaDetalladaDTO();
 
-        reservaDetallada.setReserva(reserva);
-        reservaDetallada.setSede(reservaService.listarSedeReserva(reserva.getId()));
-        reservaDetallada.setTipoReserva(reservaService.listarTipoReservaReserva(reserva.getId()));
-        reservaDetallada.setMesa(reservaService.listarMesaReserva(reserva.getId()));
-        reservaDetallada.setUsuario(reservaService.listarUsuarioReserva(reserva.getId()));
+            reservaDetallada.setReserva(reserva);
+            reservaDetallada.setSede(reservaService.listarSedeReserva(reserva.getId()));
+            reservaDetallada.setTipoReserva(reservaService.listarTipoReservaReserva(reserva.getId()));
+            reservaDetallada.setMesa(reservaService.listarMesaReserva(reserva.getId()));
+            reservaDetallada.setUsuario(reservaService.listarUsuarioReserva(reserva.getId()));
 
-        //Enviar DTO al front
-        model.addAttribute("reservaDetallada", reservaDetallada.getReserva());
+            //Enviar DTO al front
+            model.addAttribute("reservaDetallada", reservaDetallada.getReserva());
 
-        System.out.println("Enviado al front: " + reservaDetallada.getSede().getId());
+            System.out.println("Enviado al front: " + reservaDetallada.getSede().getId());
 
-        //Mandar los tipos de reserva disponible al front
-        model.addAttribute("tiposReserva", tipoReservaService.listarTodos());
+            //Mandar los tipos de reserva disponible al front
+            model.addAttribute("tiposReserva", tipoReservaService.listarTodos());
 
-        //Mandar las sedes disponibles al front
-        model.addAttribute("sedes", sedeService.listarSedes());
+            //Mandar las sedes disponibles al front
+            model.addAttribute("sedes", sedeService.listarSedes());
 
-        model.addAttribute("reservaDetallada", new ReservaDetalladaDTO());
+            model.addAttribute("reservaDetallada", new ReservaDetalladaDTO());
 
-        return "modificarReservaCliente";
+            return "modificarReservaCliente";
         }catch(Exception e){
             System.out.println("ERROR");
             return "redirect:/testcliente/verReservaCliente";
