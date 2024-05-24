@@ -17,6 +17,7 @@ public class Ch0ch4l1t0pr0Application implements CommandLineRunner{
 	private UsuarioRepository repository;
 
 	public static void main(String[] args) {
+	
 		SpringApplication.run(Ch0ch4l1t0pr0Application.class, args);
 
 	}

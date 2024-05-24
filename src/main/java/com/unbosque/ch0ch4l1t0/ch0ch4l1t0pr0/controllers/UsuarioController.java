@@ -18,6 +18,8 @@ import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Usuario;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.AuditoriaService;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.UsuarioService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class UsuarioController {
 
@@ -26,6 +28,8 @@ public class UsuarioController {
 
     @Autowired 
     private AuditoriaService auditoriaService;
+
+    private static Usuario currentUser;
 
     @GetMapping("/index")
     public String index(){
@@ -38,14 +42,16 @@ public class UsuarioController {
         return "login";
     }
     @PostMapping("/login")
-    public String validarCredenciales(@ModelAttribute("usuario") Usuario usuario, Model model){
+    public String validarCredenciales(@ModelAttribute("usuario") Usuario usuario, Model model, HttpSession session){
         Usuario usuarioBD = usuarioService.obtenerPorUsername(usuario.getUsername());
         if(usuarioService.validarCredenciales(usuario.getUsername(), usuario.getContrasena())){
             if(usuarioBD.getFkRol() == 1){
-            //    auditoriaService.crearAuditoria(new Auditoria("Inicio de sesión cliente", new Date(), "Ninguna", usuarioBD.getId()));
-                return "redirect:/menu";
+                session.setAttribute("user", usuarioBD);
+                auditoriaService.crearAuditoria(new Auditoria("Inicio de sesión cliente", new Date(), "Ninguna", usuarioBD.getId()));
+                //System.out.println("currentUser " + currentUser);
+                return "redirect:/testcliente/reservaCliente";
             }else{
-            //    auditoriaService.crearAuditoria(new Auditoria("Inicio de sesión admin", new Date(), "Ninguna", usuarioBD.getId()));
+                auditoriaService.crearAuditoria(new Auditoria("Inicio de sesión admin", new Date(), "Ninguna", usuarioBD.getId()));
                 return "redirect:/menuAdmin";
             }
         }else{
@@ -64,12 +70,12 @@ public class UsuarioController {
     public String index(@ModelAttribute("usuario") Usuario usuario, Model model){
         Usuario comprobarUsuario = usuarioService.obtenerPorUsername(usuario.getUsername());
         if(comprobarUsuario == null){
-        //    auditoriaService.crearAuditoria(new Auditoria("Registro exitoso", new Date(), "Usuario", 0L));
+            auditoriaService.crearAuditoria(new Auditoria("Registro exitoso", new Date(), "Usuario", usuario.getId()));
             usuario.setFkRol(1L);
             usuarioService.guardarUsuario(usuario);
             return "redirect:/login";
         }else{
-        //    auditoriaService.crearAuditoria(new Auditoria("Registro fallido", new Date(), "Ninguna", 0L));
+            auditoriaService.crearAuditoria(new Auditoria("Registro fallido", new Date(), "Ninguna", usuario.getId()));
             model.addAttribute("mensajeError", "Usuario ya existe");
             return "registrar";
         }
@@ -87,4 +93,9 @@ public class UsuarioController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
+    public Usuario getCurrentUser() {
+        return currentUser;
+    }
+
+    
 }

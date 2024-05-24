@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Auditoria;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Mesa;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Reserva;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Sede;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.TipoReserva;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.Usuario;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.entities.dto.ReservaDetalladaDTO;
+import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.AuditoriaService;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.MesaService;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.ReservaService;
 import com.unbosque.ch0ch4l1t0.ch0ch4l1t0pr0.services.SedeService;
@@ -36,7 +38,6 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/testcliente")
 public class ClientTestController {
-
     //Servicio de las sedes
     @Autowired
     private SedeService sedeService;
@@ -53,14 +54,19 @@ public class ClientTestController {
     @Autowired
     private MesaService mesaService;
 
+   @Autowired
+   private AuditoriaService auditoriaService;
+
 
     //---------------------INICIO HACER RESERVA--------------------
 
     //Métodos para retornar las plantillas Thymeleaf
     @GetMapping("/reservaCliente")
-    public String crearReserva(Model model){
+    public String crearReserva(Model model, HttpSession session){
         //System.out.println("Cargando sedes...");
         //Genera la lista de sedes usando el servicio
+
+        System.out.println("Usuario logueado: " + ((Usuario) session.getAttribute("user")).getNombres());
         model.addAttribute("sedes", sedeService.listarSedes());
 
         //System.out.println("Cargando tipos de reserva...");
@@ -75,12 +81,13 @@ public class ClientTestController {
         //Creación del objeto que se va a popular en el formulario (Llega luego al POST)
         model.addAttribute("reserva", new Reserva());
 
-        System.out.println("Carga exitosa, recuperando reservaCliente");
+        //System.out.println("Carga exitosa, recuperando reservaCliente");
         return "reservaCliente";
     }
 
     //Este método recibe el formulario de crear una reserva
     //Método que se usa para guardar la reserva en la DB
+    //Nombre del atributo del usuario logueado en HttpSession: user
     @PostMapping("/crearReserva")
     public String verReserva(@RequestParam("mesaId") Long mesaid, Model model, HttpSession session){
         //Verificar que la reserva esté disponible
@@ -94,9 +101,10 @@ public class ClientTestController {
         reservaTarget.setFkMesa(mesaTarget.getId());
         
         System.out.println(mesaTarget == null);
-        reservaTarget.setFkUsuario(1L); //Este valor debería ser el ID del usuario logueado
+        reservaTarget.setFkUsuario(((Usuario) session.getAttribute("user")).getId()); //Este valor debería ser el ID del usuario logueado
         //Guardar reserva en la base de datos
         reservaService.guardar(reservaTarget);
+        auditoriaService.crearAuditoria(new Auditoria("Mesa reservada", new Date(), "Mesa", ((Usuario)session.getAttribute("user")).getId()));
 
         //Actualizar el estado de la mesa
         if(mesaTarget.isEsLibre()){
@@ -142,10 +150,10 @@ public class ClientTestController {
 
     //Método que carga la plantilla de verReservaCliente.html
     @GetMapping("/verReservaCliente")
-    public String verReservaCliente(Model model){
+    public String verReservaCliente(Model model, HttpSession session){
 
         //Cargar las reservas del cliente
-        java.util.List<Reserva> reservasUsuario = reservaService.listarReservasUsuario(1L); //TODO: CAMBIAR POR EL ID DEL USUARIO 
+        java.util.List<Reserva> reservasUsuario = reservaService.listarReservasUsuario(((Usuario) session.getAttribute("user")).getId());
 
         //Verificar si la respuesta con las reservas está vacía
         if(reservasUsuario.size() == 0){
@@ -202,6 +210,9 @@ public class ClientTestController {
     @GetMapping("/modificarReservaCliente/{id}")
     public String modificarReservaCliente(@PathVariable("id") Long id, Model model){
 
+        try{
+
+        
         System.out.println("entra a GET a buscar " + id);
         //Obtener la reserva en cuestión
         Reserva reserva = reservaService.findById(id).get();
@@ -230,13 +241,17 @@ public class ClientTestController {
         model.addAttribute("reservaDetallada", new ReservaDetalladaDTO());
 
         return "modificarReservaCliente";
+        }catch(Exception e){
+            System.out.println("ERROR");
+            return "redirect:/testcliente/verReservaCliente";
+        }
     }
 
     //Método POST para modificar la reserva
     @PostMapping("/modificarReserva")
     public String modificarReserva(@ModelAttribute("reservaDetallada") ReservaDetalladaDTO reservaDetallada){
         
-        
+        try{
         // Obtener la reserva original
         Reserva reservaOriginal = reservaService.findById(reservaDetallada.getReserva().getId()).orElse(null);
         
@@ -258,6 +273,11 @@ public class ClientTestController {
         //reservaService.modificarReserva(reserva.getId(), reserva);
 
         return "redirect:/testcliente/verReservaCliente";
+
+        }catch(Exception e){
+            System.out.println("ERROR");
+            return "redirect:/testcliente/verReservaCliente";
+        }
     }
 
         //-----------------INICIO MODIFICAR RESERVAS---------------------
