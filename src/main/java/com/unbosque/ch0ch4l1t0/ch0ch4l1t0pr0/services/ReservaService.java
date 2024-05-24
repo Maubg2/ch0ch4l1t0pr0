@@ -36,4 +36,6 @@ public interface ReservaService {
 
     public Optional<Reserva> eliminarReserva(Long id);
 
+    public List<Reserva> obtenerReservasPorUsuarioId(Long idUsuario);
+
 }

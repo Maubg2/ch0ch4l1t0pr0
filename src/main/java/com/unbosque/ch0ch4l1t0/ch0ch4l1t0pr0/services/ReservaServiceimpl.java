@@ -89,4 +89,9 @@ public class ReservaServiceimpl implements ReservaService {
         return repository.listarUsuarioReserva(reservaId);
     }
 
+    @Override
+    public List<Reserva> obtenerReservasPorUsuarioId(Long idUsuario) {
+        return repository.findByFkUsuario(idUsuario);
+    }
+
 }

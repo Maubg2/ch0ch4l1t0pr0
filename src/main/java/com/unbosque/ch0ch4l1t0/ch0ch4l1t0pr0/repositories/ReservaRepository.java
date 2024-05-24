@@ -35,4 +35,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long>{
     //Sólo retorna el usuario asociado a una reserva
     @Query("SELECT u FROM Reserva r JOIN Usuario u ON r.fkUsuario = u.id WHERE r.id =:reservaId")
     public Usuario listarUsuarioReserva(Long reservaId);
+
+    List<Reserva> findByFkUsuario(Long fkUsuario);
+
 }
