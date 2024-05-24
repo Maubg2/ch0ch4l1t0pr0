@@ -175,7 +175,7 @@ public class ControllerTestEmpleado {
     }
 
 //////////////////////////////////////////////////////////
-    
+
     @GetMapping("/verClientesAdmin")
     public String verClientesAdmin(Model model){
         List<Usuario> usuarios = usuarioService.obtenerClientes();
@@ -183,40 +183,7 @@ public class ControllerTestEmpleado {
         model.addAttribute("usuarios", usuarios);
         return "verClientesAdmin";
     }
-    @GetMapping("/verReservas/{idUsuario}")
-    public String verReservas(@PathVariable Long idUsuario, Model model) {
-        List<Reserva> reservasUsuario = reservaService.listarReservasUsuario(idUsuario);
 
-        if (reservasUsuario.isEmpty()) {
-            // TODO: Agregar la alerta de que no hay reservas
-            return "redirect:/verClientesAdmin";
-        }
-
-        List<ReservaDetalladaDTO2> reservasDetalladas = new ArrayList<>();
-        for (Reserva reserva : reservasUsuario) {
-            ReservaDetalladaDTO2 dto = new ReservaDetalladaDTO2();
-            dto.setReserva(reserva);
-            dto.setSede(reservaService.listarSedeReserva(reserva.getId()));
-            dto.setTipoReserva(reservaService.listarTipoReservaReserva(reserva.getId()));
-            dto.setMesa(reservaService.listarMesaReserva(reserva.getId()));
-            dto.setUsuario(reservaService.listarUsuarioReserva(reserva.getId()));
-            List<DetalleReserva> detalles = detalleReservaService.obtenerDetallesPorReserva(reserva.getId());
-            if (!detalles.isEmpty()) {
-                dto.setDetalleReserva(detalles.get(0));  // Asumiendo que hay solo un detalle por reserva
-            }
-            reservasDetalladas.add(dto);
-        }
-
-        model.addAttribute("reservas", reservasDetalladas);
-        return "verReservas";
-    }
-
-    @GetMapping("/cambiarEstado/{detalleReservaId}")
-    public String cambiarEstado(@PathVariable Long detalleReservaId) {
-        detalleReservaService.cambiarEstado(detalleReservaId);
-        return "redirect:/reservas/verReservas/{idUsuario}";
-    }
-/*
     @GetMapping("/verReservas/{idUsuario}")
     public String verReservas(@PathVariable Long idUsuario, Model model) {
         List<Reserva> reservasUsuario = reservaService.listarReservasUsuario(idUsuario);
@@ -239,7 +206,7 @@ public class ControllerTestEmpleado {
         model.addAttribute("reservas", reservasDetalladas);
         return "verReservas";
     }
- */
+ 
 
 //////////////////////////////////////////////////////////
     @GetMapping("/auditoriasAdmin")
