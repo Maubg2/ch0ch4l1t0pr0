@@ -66,7 +66,7 @@ public class ClientTestController {
         //System.out.println("Cargando sedes...");
         //Genera la lista de sedes usando el servicio
 
-        System.out.println("Usuario logueado: " + ((Usuario) session.getAttribute("user")).getNombres());
+    //    System.out.println("Usuario logueado: " + ((Usuario) session.getAttribute("user")).getNombres());
         model.addAttribute("sedes", sedeService.listarSedes());
 
         //System.out.println("Cargando tipos de reserva...");
@@ -90,39 +90,48 @@ public class ClientTestController {
     //Nombre del atributo del usuario logueado en HttpSession: user
     @PostMapping("/crearReserva")
     public String verReserva(@RequestParam("mesaId") Long mesaid, Model model, HttpSession session){
-        //Verificar que la reserva esté disponible
-        //Reserva reserva = reservaService.
+        try{
+            //Verificar que la reserva esté disponible
+            //Reserva reserva = reservaService.
 
-        Mesa mesaTarget = mesaService.findById(mesaid).get();
-        Reserva reservaTarget = (Reserva) session.getAttribute("reserva");
-        System.out.println("Operación exitosa, reservando mesa " + mesaTarget.getId());
+            Mesa mesaTarget = mesaService.findById(mesaid).get();
+            Reserva reservaTarget = (Reserva) session.getAttribute("reserva");
+            System.out.println("Operación exitosa, reservando mesa " + mesaTarget.getId());
 
-        //Puliendo el objeto a guardar en la base de datos
-        reservaTarget.setFkMesa(mesaTarget.getId());
-        
-        System.out.println(mesaTarget == null);
-        reservaTarget.setFkUsuario(((Usuario) session.getAttribute("user")).getId()); //Este valor debería ser el ID del usuario logueado
-        //Guardar reserva en la base de datos
-        reservaService.guardar(reservaTarget);
-        auditoriaService.crearAuditoria(new Auditoria("Mesa reservada", new Date(), "Mesa", ((Usuario)session.getAttribute("user")).getId()));
+            //Puliendo el objeto a guardar en la base de datos
+            reservaTarget.setFkMesa(mesaTarget.getId());
+            
+            System.out.println(mesaTarget == null);
+            reservaTarget.setFkUsuario(((Usuario) session.getAttribute("user")).getId()); //Este valor debería ser el ID del usuario logueado
+            //Guardar reserva en la base de datos
+            reservaService.guardar(reservaTarget);
+            auditoriaService.crearAuditoria(new Auditoria("Mesa reservada", new Date(), "Mesa", ((Usuario)session.getAttribute("user")).getId()));
 
-        //Actualizar el estado de la mesa
-        if(mesaTarget.isEsLibre()){
-            mesaTarget.setEsLibre(false);
-            mesaService.modificarMesa(mesaid, mesaTarget);
+            //Actualizar el estado de la mesa
+            if(mesaTarget.isEsLibre()){
+                mesaTarget.setEsLibre(false);
+                mesaService.modificarMesa(mesaid, mesaTarget);
+            }
+            
+            return "redirect:/testcliente/reservaCliente";
+        }catch(Exception e){
+            return "redirect:/testCliente/reservaCliente";
         }
-        
-        return "redirect:/testcliente/reservaCliente";
     }
 
     //Método para buscar las mesas disponibles antes de reservar
     @PostMapping("/cargarMesa")
     public String verificarMesa(@ModelAttribute("reserva") Reserva reserva, HttpSession session, Model model){
-        //Guardar la reserva en la sesión
-        session.setAttribute("reserva", reserva);
-        System.out.println("Entra a cargarMesa");
-        model.addAttribute("reserva", reserva);
-        return "redirect:/testcliente/buscarMesa/" + reserva.getFkSede();
+        try{
+            //Guardar la reserva en la sesión
+            session.setAttribute("reserva", reserva);
+            System.out.println("Entra a cargarMesa");
+            model.addAttribute("reserva", reserva);
+            return "redirect:/testcliente/buscarMesa/" + reserva.getFkSede();
+        }catch(Exception e){
+            return "redirect:/testcliente/reservaCliente";
+        }
+        
     }
 
     //Plantilla que muestra las mesas
@@ -138,7 +147,7 @@ public class ClientTestController {
         System.out.println("Encontradas " + mesasDeSede.size() + " mesas");
         //No envía las mesas encontradas
         
-        System.out.println("Es libre: " + mesasDeSede.get(0).isEsLibre());
+    //    System.out.println("Es libre: " + mesasDeSede.get(0).isEsLibre());
         model.addAttribute("mesas", mesasDeSede);
 
         return "buscarMesaCliente";
