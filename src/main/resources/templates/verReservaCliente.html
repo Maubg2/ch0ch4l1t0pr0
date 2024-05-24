@@ -46,7 +46,7 @@
 					<td><span th:text="${reserva.usuario.nombres}"></span></td>
 					<td><span th:text="${reserva.mesa.id}"></span></td>
 					<td>
-						<a class="btn btn-primary">Modificar</a>
+						<a class="btn btn-primary" th:href="@{'/testcliente/modificarReservaCliente/' + ${reserva.reserva.id}}">Modificar</a>
 						<a class="btn btn-danger">Cancelar</a>
 					</td>
 				</tr>

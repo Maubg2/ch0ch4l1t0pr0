@@ -195,6 +195,73 @@ public class ClientTestController {
         return "verReservaCliente";
     }
 
+
+        //-----------------INICIO MODIFICAR RESERVAS---------------------
+
+    //Método para ir a modificar una reserva
+    @GetMapping("/modificarReservaCliente/{id}")
+    public String modificarReservaCliente(@PathVariable("id") Long id, Model model){
+
+        System.out.println("entra a GET a buscar " + id);
+        //Obtener la reserva en cuestión
+        Reserva reserva = reservaService.findById(id).get();
+
+        System.out.println("Encontrada reserva con ID " + reserva.getId());
+        //Popular el DTO para mostrar datos en vez de FK
+        ReservaDetalladaDTO reservaDetallada = new ReservaDetalladaDTO();
+
+        reservaDetallada.setReserva(reserva);
+        reservaDetallada.setSede(reservaService.listarSedeReserva(reserva.getId()));
+        reservaDetallada.setTipoReserva(reservaService.listarTipoReservaReserva(reserva.getId()));
+        reservaDetallada.setMesa(reservaService.listarMesaReserva(reserva.getId()));
+        reservaDetallada.setUsuario(reservaService.listarUsuarioReserva(reserva.getId()));
+
+        //Enviar DTO al front
+        model.addAttribute("reservaDetallada", reservaDetallada.getReserva());
+
+        System.out.println("Enviado al front: " + reservaDetallada.getSede().getId());
+
+        //Mandar los tipos de reserva disponible al front
+        model.addAttribute("tiposReserva", tipoReservaService.listarTodos());
+
+        //Mandar las sedes disponibles al front
+        model.addAttribute("sedes", sedeService.listarSedes());
+
+        model.addAttribute("reservaDetallada", new ReservaDetalladaDTO());
+
+        return "modificarReservaCliente";
+    }
+
+    //Método POST para modificar la reserva
+    @PostMapping("/modificarReserva")
+    public String modificarReserva(@ModelAttribute("reservaDetallada") ReservaDetalladaDTO reservaDetallada){
+        
+        
+        // Obtener la reserva original
+        Reserva reservaOriginal = reservaService.findById(reservaDetallada.getReserva().getId()).orElse(null);
+        
+        if (reservaOriginal != null) {
+            // Actualizar los datos de la reserva original
+            reservaOriginal.setFecha(reservaDetallada.getReserva().getFecha());
+            reservaOriginal.setFkTipoReserva(reservaDetallada.getTipoReserva().getId());
+            reservaOriginal.setFkSede(reservaDetallada.getSede().getId());
+            reservaOriginal.setFkMesa(reservaDetallada.getMesa().getId());
+            
+            reservaService.modificarReserva(reservaOriginal.getId(), reservaOriginal);
+        }else{
+            System.out.println("No hay ID");
+        }
+        
+        System.out.println("ReservaDTO a modificar: " + reservaDetallada.getReserva().getFecha());
+        //System.out.println("ReservaDTO a modificar: " + reserva.getFecha());
+
+        //reservaService.modificarReserva(reserva.getId(), reserva);
+
+        return "redirect:/testcliente/verReservaCliente";
+    }
+
+        //-----------------INICIO MODIFICAR RESERVAS---------------------
+
     //----------------------FIN VER RESERVAS-----------------
 
     //Método para el formato de la fecha

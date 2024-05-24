@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+<body>
+    <!--Barra de navegación superior-->
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+		<a class="navbar-brand" href="#"> CLIENTE </a>
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/testcliente/reservaCliente}">Hacer una reserva</a></li> <!--Ruta actual de desarrollo CAMBIAR EN PRODUCCIÓN-->
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/testcliente/verReservaCliente}">Ver mis reservas</a></li> <!--Ruta actual de desarrollo CAMBIAR EN PRODUCCIÓN-->
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/index}">Log out</a></li> <!--Ruta actual de desarrollo CAMBIAR EN PRODUCCIÓN-->
+			</ul>
+		</div>
+	</nav>
+	<!--Fin barra de navegación superior-->
+
+    <div class="container">
+        <h2 class="text-center"></h2>
+        
+        <form th:action="@{/testcliente/modificarReserva}" th:object="${reservaDetallada.reserva}" method="POST">
+            <div class="form-group">
+                <div class="input-group">
+                    <label>ID SEDE: </label>
+                    <input type="text" name="fecha" th:field="${reservaDetallada.sede.id}" required disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <label>Fecha: </label>
+                    <input type="date" name="fecha" th:field="*{fecha}" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Tipo: </label> 
+                <select th:field="*{fkTipoReserva}">
+                    <option th:each="tipo : ${tiposReserva}" th:value="${tipo.id}" th:text="${tipo.tipo}" th:selected="${tipo.id} == ${reservaDetallada.reserva.fkTipoReserva}"></option> <!--Recorrer la lista de tipos de reserva disponibles-->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Sede: </label> 
+                <select th:field="*{fkSede}">
+                    <option th:each="sede : ${sedes}" th:value="${sede.id}" th:text="${sede.nombre}" th:selected="${sede.id} == ${reservaDetallada.reserva.fkSede}"></option> <!--Recorrer la lista de sedes disponibles-->
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </form>
+        
+        <div class="text-center">
+            <a class="btn btn-primary" th:href="@{'/testcliente/verReservaCliente'}">Volver a ver reservas</a>
+        </div>
+    </div>
+
+</body>
+</html>
